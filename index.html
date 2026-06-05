@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IntervalWalker — Japanese Interval Walking for iPhone &amp; Apple Watch</title>
+    <meta name="description" content="IntervalWalker is a purpose-built companion for Japanese Interval Walking (JIW) — a scientifically proven method that alternates fast and slow intervals to improve fitness. Free for iPhone and Apple Watch.">
+    <meta property="og:title" content="IntervalWalker — Japanese Interval Walking">
+    <meta property="og:description" content="A scientifically proven walking method, guided by your iPhone and Apple Watch. Alternating fast and slow intervals to improve cardiovascular fitness, strength, and blood pressure.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://djctwo.github.io/intervalwalker/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="IntervalWalker — Japanese Interval Walking">
+    <meta name="twitter:description" content="A scientifically proven walking method, guided by your iPhone and Apple Watch.">
+    <link rel="canonical" href="https://djctwo.github.io/intervalwalker/">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg-card: #141414;
+            --bg-section: #111111;
+            --text: #f0f0f0;
+            --text-muted: #9a9a9a;
+            --mint: #5de8c1;
+            --cyan: #4dd4e6;
+            --orange: #f5a623;
+            --amber: #e8a85d;
+            --indigo: #7b8cde;
+            --border: #222222;
+            --max-width: 960px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav .nav-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--mint);
+            text-decoration: none;
+            letter-spacing: -0.01em;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        nav .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+        }
+
+        nav .nav-links a:hover {
+            color: var(--text);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 8rem 1.5rem 5rem;
+            text-align: center;
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.35rem 1rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--mint);
+            border: 1px solid rgba(93, 232, 193, 0.25);
+            background: rgba(93, 232, 193, 0.06);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 .accent-orange {
+            color: var(--orange);
+        }
+
+        .hero h1 .accent-cyan {
+            color: var(--cyan);
+        }
+
+        .hero .tagline {
+            font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.5;
+        }
+
+        .app-store-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.9rem 2rem;
+            background: var(--text);
+            color: var(--bg);
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .app-store-btn:hover {
+            transform: scale(1.03);
+            opacity: 0.93;
+        }
+
+        .app-store-btn .apple-icon {
+            font-size: 1.4rem;
+            line-height: 1;
+        }
+
+        .app-store-btn .btn-text-small {
+            font-size: 0.7rem;
+            font-weight: 400;
+            display: block;
+            text-align: left;
+            line-height: 1;
+        }
+
+        .app-store-btn .btn-text-large {
+            font-size: 1.05rem;
+            font-weight: 600;
+            display: block;
+            text-align: left;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Section layout */
+        section {
+            padding: 5rem 1.5rem;
+        }
+
+        .section-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--mint);
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+        }
+
+        .section-desc {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            line-height: 1.6;
+            margin-bottom: 3rem;
+        }
+
+        /* Features */
+        .features-section {
+            background: var(--bg-section);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: border-color 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: #333;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.55;
+        }
+
+        /* How It Works */
+        .how-it-works-section {
+            background: var(--bg);
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            counter-reset: step;
+        }
+
+        .step {
+            position: relative;
+            padding-left: 0;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            font-size: 1rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .step:nth-child(1) .step-number {
+            background: rgba(93, 232, 193, 0.12);
+            color: var(--mint);
+        }
+        .step:nth-child(2) .step-number {
+            background: rgba(245, 166, 35, 0.12);
+            color: var(--orange);
+        }
+        .step:nth-child(3) .step-number {
+            background: rgba(77, 212, 230, 0.12);
+            color: var(--cyan);
+        }
+        .step:nth-child(4) .step-number {
+            background: rgba(123, 140, 222, 0.12);
+            color: var(--indigo);
+        }
+
+        .step h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .step p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            line-height: 1.55;
+        }
+
+        /* Apple Watch */
+        .watch-section {
+            background: var(--bg-section);
+        }
+
+        .watch-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.25rem;
+            margin-top: 2rem;
+        }
+
+        .watch-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .watch-feature .wf-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            line-height: 1.3;
+        }
+
+        .watch-feature h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .watch-feature p {
+            color: var(--text-muted);
+            font-size: 0.87rem;
+            line-height: 1.5;
+        }
+
+        /* Science */
+        .science-section {
+            background: var(--bg);
+        }
+
+        .science-callout {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--mint);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 700px;
+        }
+
+        .science-callout p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.65;
+        }
+
+        .science-callout p strong {
+            color: var(--text);
+        }
+
+        /* Privacy */
+        .privacy-section {
+            background: var(--bg-section);
+        }
+
+        .privacy-highlight {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .privacy-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 0.92rem;
+            font-weight: 600;
+        }
+
+        .privacy-pill .pp-icon {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .privacy-full {
+            border-top: 1px solid var(--border);
+            padding-top: 3rem;
+        }
+
+        .privacy-full h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.01em;
+        }
+
+        .privacy-full .last-updated {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
+        }
+
+        .privacy-full h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .privacy-full p,
+        .privacy-full li {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            line-height: 1.65;
+        }
+
+        .privacy-full ul {
+            list-style: none;
+            padding: 0;
+            margin: 0.75rem 0;
+        }
+
+        .privacy-full ul li {
+            padding-left: 1.25rem;
+            position: relative;
+            margin-bottom: 0.5rem;
+        }
+
+        .privacy-full ul li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.65em;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--mint);
+        }
+
+        .privacy-full ul li strong {
+            color: var(--text);
+        }
+
+        .privacy-full a {
+            color: var(--mint);
+            text-decoration: none;
+        }
+
+        .privacy-full a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+
+        .footer-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text);
+        }
+
+        .footer-copy {
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+        /* Mobile nav toggle */
+        @media (max-width: 640px) {
+            nav .nav-links {
+                gap: 1rem;
+            }
+
+            nav .nav-links a {
+                font-size: 0.8rem;
+            }
+
+            .hero {
+                padding-top: 6.5rem;
+            }
+
+            section {
+                padding: 3.5rem 1.25rem;
+            }
+
+            .feature-card {
+                padding: 1.5rem;
+            }
+
+            .privacy-highlight {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+    <div class="nav-inner">
+        <a href="#" class="logo">IntervalWalker</a>
+        <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#watch">Watch</a></li>
+            <li><a href="#privacy">Privacy</a></li>
+            <li><a href="https://github.com/djctwo/intervalwalker">Support</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+    <span class="hero-badge">Free &mdash; No Ads, No Subscriptions</span>
+    <h1>Walk smarter with<br><span class="accent-orange">fast</span> &amp; <span class="accent-cyan">slow</span> intervals</h1>
+    <p class="tagline">IntervalWalker guides you through Japanese Interval Walking &mdash; a scientifically proven method that alternates pace to improve fitness, strength, and blood pressure.</p>
+    <a href="#" class="app-store-btn" aria-label="Download on the App Store">
+        <span class="apple-icon">&#63743;</span>
+        <span>
+            <span class="btn-text-small">Download on the</span>
+            <span class="btn-text-large">App Store</span>
+        </span>
+    </a>
+    <p class="hero-subtitle">iPhone + Apple Watch &middot; iOS 17+ &middot; watchOS 10+</p>
+</header>
+
+<!-- Features -->
+<section class="features-section" id="features">
+    <div class="section-inner">
+        <p class="section-label">Features</p>
+        <h2 class="section-title">Everything you need.<br>Nothing you don't.</h2>
+        <p class="section-desc">No accounts. No cloud sync. No subscriptions. Just a beautifully simple interval timer built for one thing: making your walks more effective.</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="feature-icon" aria-hidden="true">&#9201;</span>
+                <h3>Guided Interval Timer</h3>
+                <p>A circular progress ring with phase-colored accents guides you through each interval. Voice announcements, haptic taps, and a 3-2-1 countdown keep you on pace without looking at your screen.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon" aria-hidden="true">&#127925;</span>
+                <h3>Apple Music Integration</h3>
+                <p>Pick separate playlists for fast and slow phases. Music switches automatically when your interval changes &mdash; high energy for fast phases, chill for recovery.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon" aria-hidden="true">&#10084;&#65039;</span>
+                <h3>Health &amp; Fitness Tracking</h3>
+                <p>Per-interval heart rate tracking, steps, distance, calories, and GPS routes &mdash; all saved to Apple Health. See your fast vs. slow phase averages after every walk.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon" aria-hidden="true">&#128202;</span>
+                <h3>Walk History &amp; Stats</h3>
+                <p>Review every walk with detailed breakdowns &mdash; duration, sets completed, distance, and per-phase heart rate. Track your weekly progress from the dashboard.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="how-it-works-section" id="how-it-works">
+    <div class="section-inner">
+        <p class="section-label">How It Works</p>
+        <h2 class="section-title">Four steps. That's it.</h2>
+        <p class="section-desc">Japanese Interval Walking is simple by design. IntervalWalker handles the timing so you can focus on the walk.</p>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Choose a profile</h3>
+                <p>Pick from Beginner, Standard, or Advanced &mdash; or create custom intervals from 1 to 10 minutes per phase with 1 to 15 sets.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Walk fast</h3>
+                <p>When the orange ring starts, walk at a brisk pace &mdash; around 70% of your max effort. Voice cues and haptics tell you when to start.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Walk slow</h3>
+                <p>When the cyan ring appears, ease back to a comfortable pace. Recover, catch your breath, and let your heart rate come down.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Repeat &amp; review</h3>
+                <p>Complete your sets, then review your stats &mdash; distance, heart rate per phase, and route. Build your streak over time.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Apple Watch -->
+<section class="watch-section" id="watch">
+    <div class="section-inner">
+        <p class="section-label">Apple Watch</p>
+        <h2 class="section-title">Leave your phone behind.</h2>
+        <p class="section-desc">IntervalWalker runs as a fully standalone watchOS app. Start a walk from your wrist with live workout tracking, heart rate monitoring, and haptic phase alerts.</p>
+        <div class="watch-features">
+            <div class="watch-feature">
+                <span class="wf-icon" aria-hidden="true">&#9889;</span>
+                <div>
+                    <h4>Standalone or Mirrored</h4>
+                    <p>Start on your watch independently, or start on your phone and have it mirror automatically.</p>
+                </div>
+            </div>
+            <div class="watch-feature">
+                <span class="wf-icon" aria-hidden="true">&#128151;</span>
+                <div>
+                    <h4>Live Heart Rate</h4>
+                    <p>Real-time heart rate with per-phase averages via HKLiveWorkoutBuilder. See your effort in fast vs. slow intervals.</p>
+                </div>
+            </div>
+            <div class="watch-feature">
+                <span class="wf-icon" aria-hidden="true">&#128488;</span>
+                <div>
+                    <h4>Voice Cues &amp; Haptics</h4>
+                    <p>Phase changes announced aloud with a 3-2-1 countdown and distinct haptic patterns. No screen-checking needed.</p>
+                </div>
+            </div>
+            <div class="watch-feature">
+                <span class="wf-icon" aria-hidden="true">&#128736;</span>
+                <div>
+                    <h4>Widgets &amp; Complications</h4>
+                    <p>Three built-in widgets: walking streak, weekly sessions, and last walk time &mdash; right on your watch face.</p>
+                </div>
+            </div>
+            <div class="watch-feature">
+                <span class="wf-icon" aria-hidden="true">&#128167;</span>
+                <div>
+                    <h4>Water Lock</h4>
+                    <p>Lock the screen during rainy walks or sweat-heavy sessions. Rotate the crown to unlock.</p>
+                </div>
+            </div>
+            <div class="watch-feature">
+                <span class="wf-icon" aria-hidden="true">&#127908;</span>
+                <div>
+                    <h4>Siri Shortcut</h4>
+                    <p>"Start a walk with IntervalWalker" &mdash; launch your session hands-free right from your wrist.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- The Science -->
+<section class="science-section" id="science">
+    <div class="section-inner">
+        <p class="section-label">The Science</p>
+        <h2 class="section-title">15+ years of research.</h2>
+        <div class="science-callout">
+            <p>Japanese Interval Walking was developed at <strong>Shinshu University</strong> and has been studied for over 15 years. Research shows that alternating <strong>3 minutes of fast walking</strong> (~70% max effort) with <strong>3 minutes of slow walking</strong>, repeated 5 times, produces greater improvements in cardiovascular fitness, muscle strength, and blood pressure than steady-pace walking of the same duration.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Privacy -->
+<section class="privacy-section" id="privacy">
+    <div class="section-inner">
+        <p class="section-label">Privacy</p>
+        <h2 class="section-title">Your data stays on your device.</h2>
+        <p class="section-desc">IntervalWalker has no servers, no accounts, no analytics, and no tracking. Everything lives on your iPhone and Apple Watch.</p>
+
+        <div class="privacy-highlight">
+            <div class="privacy-pill">
+                <span class="pp-icon" aria-hidden="true">&#128274;</span>
+                <span>No data collection</span>
+            </div>
+            <div class="privacy-pill">
+                <span class="pp-icon" aria-hidden="true">&#128581;</span>
+                <span>No accounts</span>
+            </div>
+            <div class="privacy-pill">
+                <span class="pp-icon" aria-hidden="true">&#128200;</span>
+                <span>No analytics or tracking</span>
+            </div>
+            <div class="privacy-pill">
+                <span class="pp-icon" aria-hidden="true">&#9940;</span>
+                <span>No third-party sharing</span>
+            </div>
+        </div>
+
+        <!-- Full Privacy Policy -->
+        <div class="privacy-full" id="privacy-policy">
+            <h3>Privacy Policy</h3>
+            <p class="last-updated">Last updated: March 17, 2026</p>
+
+            <h4>Overview</h4>
+            <p>IntervalWalker is a local-only fitness app. All your data stays on your device. We do not collect, transmit, or store any personal information on external servers.</p>
+
+            <h4>Data Collection</h4>
+            <p><strong>We do not collect any data.</strong> IntervalWalker has no user accounts, no analytics, no tracking, and no server-side components.</p>
+
+            <h4>Data Stored On Your Device</h4>
+            <p>IntervalWalker stores the following data locally on your iPhone and Apple Watch:</p>
+            <ul>
+                <li><strong>Walk sessions:</strong> Date, duration, sets completed, interval timings, steps, distance, calories, and heart rate data. Stored via SwiftData on-device.</li>
+                <li><strong>Settings preferences:</strong> Interval durations, set count, music and feedback toggles, selected playlists. Stored in UserDefaults on-device.</li>
+                <li><strong>Widget data:</strong> Walking streak, weekly session count, and last walk date. Stored in shared App Group UserDefaults on-device.</li>
+            </ul>
+
+            <h4>Third-Party Services</h4>
+            <p>IntervalWalker integrates with the following Apple frameworks. All data stays within the Apple ecosystem on your device:</p>
+            <ul>
+                <li><strong>HealthKit:</strong> With your permission, IntervalWalker reads heart rate data during walks and writes workout sessions (including GPS routes) to Apple Health. IntervalWalker does not share Health data with any third party.</li>
+                <li><strong>Apple Music (MusicKit):</strong> With your permission, IntervalWalker accesses your Apple Music library to play music during walks. IntervalWalker does not access your listening history or share music data.</li>
+                <li><strong>Core Location:</strong> With your permission, IntervalWalker records your GPS route during walks and saves it with your workout in Apple Health. Location data is not transmitted or stored outside of Apple Health.</li>
+                <li><strong>WatchConnectivity:</strong> IntervalWalker communicates between your iPhone and Apple Watch to sync walk state and settings. This communication is device-to-device only.</li>
+            </ul>
+
+            <h4>Data Sharing</h4>
+            <p><strong>We do not share any data with third parties. Period.</strong></p>
+
+            <h4>Data Deletion</h4>
+            <p>All IntervalWalker data can be deleted by:</p>
+            <ul>
+                <li>Deleting the app from your iPhone and/or Apple Watch</li>
+                <li>Deleting individual workout records from the Apple Health app</li>
+            </ul>
+
+            <h4>Children's Privacy</h4>
+            <p>IntervalWalker does not knowingly collect information from children under 13.</p>
+
+            <h4>Changes to This Policy</h4>
+            <p>If we update this policy, we will post the revised version here with an updated date.</p>
+
+            <h4>Contact</h4>
+            <p>For questions about this privacy policy, please <a href="https://github.com/djctwo/intervalwalker/issues">open an issue on GitHub</a>.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-inner">
+        <div class="footer-links">
+            <a href="#features">Features</a>
+            <a href="#watch">Apple Watch</a>
+            <a href="#privacy-policy">Privacy Policy</a>
+            <a href="https://github.com/djctwo/intervalwalker/issues">Support</a>
+            <a href="https://github.com/djctwo/intervalwalker">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 IntervalWalker. All rights reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>
